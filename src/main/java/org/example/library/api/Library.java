@@ -45,7 +45,10 @@ public class Library {
     }
 
     public void indexDirectory(Path path) {
-        if (!Files.isDirectory(path)) System.out.println("Not a directory");
+        if (!Files.isDirectory(path)) {
+            System.out.println("Not a directory");
+            return;
+        }
         try {
             Files.walk(path).filter(Files::isRegularFile).forEach(processor::indexFile);
             monitor.registerDirectory(path);
