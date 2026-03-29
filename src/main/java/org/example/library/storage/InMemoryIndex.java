@@ -16,42 +16,41 @@ public class InMemoryIndex implements IndexStorage {
     private final Lock readLock = lock.readLock();
     private final Lock writeLock = lock.writeLock();
 
+    @Override
     public void addTokens(Set<String> tokens, Path path) {
         writeLock.lock();
         try {
             removePath(path);
             tokens.forEach(tok -> {
-                if (index.containsKey(tok)) {
-                    Set<Path> newPaths = index.get(tok);
-                    newPaths.add(path);
-                    index.put(tok, newPaths);
-                } else {
-                    index.put(tok, Set.of(path));
-                }
+                index.computeIfAbsent(tok, k -> ConcurrentHashMap.newKeySet()).add(path);
             });
         } finally {
             writeLock.unlock();
         }
     }
 
+    @Override
     public void removeToken(String token) {
         writeLock.lock();
         try {
             index.remove(token);
         } finally {
-            writeLock.lock();
+            writeLock.unlock();
         }
     }
 
+    @Override
     public void removePath(Path path) {
         writeLock.lock();
         try {
-            index.forEach((token, paths) -> paths.remove(path));
+            index.values().forEach(paths -> paths.remove(path));
+            index.entrySet().removeIf(entry -> entry.getValue().isEmpty());
         } finally {
             writeLock.unlock();
         }
     }
 
+    @Override
     public Set<Path> search(String token) {
         readLock.lock();
         try {
