@@ -5,6 +5,7 @@ import org.example.library.reader.TextReader;
 import org.example.library.tokenizator.Tokenizer;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -13,7 +14,7 @@ public class FileProcessorImpl implements FileProcessor {
     private final IndexStorage index;
     private final Set<TextReader> readers;
 
-    public void indexFile(String path) {
+    public void indexFile(Path path) {
         String extension = getExtension(path);
         for (TextReader reader : readers) {
             try {
@@ -28,7 +29,15 @@ public class FileProcessorImpl implements FileProcessor {
         }
     }
 
-    private String getExtension(String path) {
-        return path.substring(path.lastIndexOf("."));
+    public void deleteIndex(Path path) {
+        index.removePath(path);
+    }
+
+    public Set<Path> search(String word) {
+        return index.search(word);
+    }
+
+    private String getExtension(Path path) {
+        return path.toString().substring(path.toString().lastIndexOf("."));
     }
 }
