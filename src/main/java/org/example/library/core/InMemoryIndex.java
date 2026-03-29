@@ -15,25 +15,24 @@ public class InMemoryIndex implements IndexStorage {
     private final Lock readLock = lock.readLock();
     private final Lock writeLock = lock.writeLock();
 
-    public void addToken(String token, Set<String> paths) {
+    public void addTokens(Set<String> tokens, String path) {
         writeLock.lock();
         try {
-            index.put(token, paths);
+            removePath(path);
+            tokens.forEach(tok -> {
+                if (index.containsKey(tok)) {
+                    Set<String> newPaths = index.get(tok);
+                    newPaths.add(path);
+                    index.put(tok, newPaths);
+                } else {
+                    index.put(tok, Set.of(path));
+                }
+            });
         } finally {
             writeLock.unlock();
         }
     }
 
-    public void updateToken(String token, Set<String> paths) {
-        writeLock.lock();
-        try {
-            Set<String> newPaths = index.get(token);
-            newPaths.addAll(paths);
-            index.put(token, newPaths);
-        } finally {
-            writeLock.unlock();
-        }
-    }
 
     public void removeToken(String token) {
         writeLock.lock();
@@ -47,9 +46,7 @@ public class InMemoryIndex implements IndexStorage {
     public void removePath(String path) {
         writeLock.lock();
         try {
-            index.forEach((token, paths) -> {
-                paths.remove(path);
-            });
+            index.forEach((token, paths) -> paths.remove(path));
         } finally {
             writeLock.unlock();
         }
@@ -63,5 +60,4 @@ public class InMemoryIndex implements IndexStorage {
             readLock.unlock();
         }
     }
-
 }
