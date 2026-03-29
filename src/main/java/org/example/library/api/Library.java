@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Set;
 
-public class Library {
+public class Library implements AutoCloseable {
     private final FileMonitor monitor;
     private final FileProcessor processor;
     private final Set<TextReader> readers;
@@ -39,12 +39,14 @@ public class Library {
         this.processor = new FileProcessorImpl(this.tokenizer, this.index, this.readers);
         try {
             this.monitor = new FileMonitorImpl(this.processor);
+            this.monitor.start();
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize FileMonitor\n" + Arrays.toString(e.getStackTrace()));
         }
     }
 
     public void indexDirectory(Path path) {
+        path = path.toAbsolutePath().normalize();
         if (!Files.isDirectory(path)) {
             System.out.println("Not a directory");
             return;
@@ -58,11 +60,20 @@ public class Library {
     }
 
     public void indexFile(Path path) {
-        if (Files.isRegularFile(path)) processor.indexFile(path);
+        path = path.toAbsolutePath().normalize();
+        if (Files.isRegularFile(path))  {
+            processor.indexFile(path);
+            monitor.registerDirectory(path.getParent());
+        }
         else System.out.println("Not a file");
     }
 
     public Set<Path> search(String word) {
         return index.search(word);
+    }
+
+    @Override
+    public void close() {
+        monitor.stop();
     }
 }
