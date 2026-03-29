@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.Set;
 
 public class PlainTextReader implements TextReader{
-    // Самые популярные расширения
     private final Set<String> supportingExtensions = Set.of(".txt", ".log", ".md", ".rtf",
                                                                 ".json", ".csv", ".xml", ".yaml",
                                                                 ".yml", ".ini", ".cfg", ".conf",
@@ -16,8 +15,8 @@ public class PlainTextReader implements TextReader{
                                                                 ".cpp", ".html", ".css", ".js", ".sql");
     private final int lightFileLimit = 50 * 1024 * 1024;
     @Override
-    public String read(String path) throws IOException {
-        long fileSize = Files.size(Path.of(path));
+    public String read(Path path) throws IOException {
+        long fileSize = Files.size(path);
         if (fileSize < lightFileLimit) return readLight(path);
         return readHeavy(path);
     }
@@ -27,13 +26,13 @@ public class PlainTextReader implements TextReader{
         return supportingExtensions.contains(extension);
     }
 
-    private String readLight(String path) throws IOException {
-        return Files.readString(Path.of(path));
+    private String readLight(Path path) throws IOException {
+        return Files.readString(path);
     }
 
-    private String readHeavy(String path) throws IOException {
+    private String readHeavy(Path path) throws IOException {
         StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader(path));
+        BufferedReader br = new BufferedReader(new FileReader(path.toFile()));
         String line;
         while ((line = br.readLine()) != null) {
             sb.append(line).append(" ");
