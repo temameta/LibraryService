@@ -34,10 +34,6 @@ public class FileProcessorImpl implements FileProcessor {
         index.removePath(path);
     }
 
-    public Set<Path> search(String word) {
-        return index.search(word);
-    }
-
     private String getExtension(Path path) {
         return path.toString().substring(path.toString().lastIndexOf("."));
     }
