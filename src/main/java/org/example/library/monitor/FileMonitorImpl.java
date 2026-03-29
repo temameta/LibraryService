@@ -11,12 +11,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
-@RequiredArgsConstructor
 public class FileMonitorImpl implements FileMonitor {
     private final WatchService watchService;
     private final FileProcessor fileProcessor;
-
     private final Map<WatchKey, Path> keys = new ConcurrentHashMap<>();
+
+    public FileMonitorImpl(FileProcessor fileProcessor) throws IOException {
+        this.fileProcessor = fileProcessor;
+        this.watchService = FileSystems.getDefault().newWatchService();
+    }
 
     private Thread watchThread;
     private volatile boolean running = false;
