@@ -24,6 +24,7 @@ public class FileMonitorImpl implements FileMonitor {
     private Thread watchThread;
     private volatile boolean running = false;
 
+    @Override
     public void registerDirectory(Path directory) {
         try {
             Files.walkFileTree(directory, new SimpleFileVisitor<>() {
@@ -43,6 +44,7 @@ public class FileMonitorImpl implements FileMonitor {
         keys.put(key, directory);
     }
 
+    @Override
     public void start() {
         if (running) return;
         running = true;
@@ -52,6 +54,7 @@ public class FileMonitorImpl implements FileMonitor {
         watchThread.start();
     }
 
+    @Override
     public void stop() {
         running = false;
         try {

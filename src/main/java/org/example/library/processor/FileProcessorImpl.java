@@ -15,6 +15,7 @@ public class FileProcessorImpl implements FileProcessor {
     private final IndexStorage index;
     private final Set<TextReader> readers;
 
+    @Override
     public void indexFile(Path path) {
         String extension = getExtension(path);
         for (TextReader reader : readers) {
@@ -30,6 +31,7 @@ public class FileProcessorImpl implements FileProcessor {
         }
     }
 
+    @Override
     public void deleteIndex(Path path) {
         index.removePath(path);
     }
