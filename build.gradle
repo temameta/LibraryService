@@ -1,6 +1,16 @@
 plugins {
     id 'java'
     id("io.freefair.lombok") version "9.2.0"
+    id 'application'
+}
+application {
+    // Укажите полный путь к вашему Main классу (включая пакет, если он есть)
+    mainClass = 'org.example.app.Main'
+}
+
+// РАЗРЕШАЕМ ЧТЕНИЕ ИЗ КОНСОЛИ
+run {
+    standardInput = System.in
 }
 
 group = 'org.example'
@@ -14,9 +24,15 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaExec) {
+    systemProperty "file.encoding", "UTF-8"
+    // Добавляем эти две строки для новых версий Java:
+    systemProperty "sun.stdout.encoding", "UTF-8"
+    systemProperty "sun.stderr.encoding", "UTF-8"
 }
