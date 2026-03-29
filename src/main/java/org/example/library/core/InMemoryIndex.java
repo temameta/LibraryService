@@ -1,5 +1,6 @@
 package org.example.library.core;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -29,7 +30,7 @@ public class InMemoryIndex implements IndexStorage {
     }
 
     public Set<String> search(String token) {
-        return index.get(token);
+        return index.getOrDefault(token, Collections.emptySet());
     }
 
 }
