@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class InMemoryIndex implements IndexStorage {
     // token - paths
-    private ConcurrentMap<String, Set<String>> index = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Set<String>> index = new ConcurrentHashMap<>();
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock readLock = lock.readLock();
     private final Lock writeLock = lock.writeLock();
