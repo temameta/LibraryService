@@ -1,4 +1,4 @@
-package org.example.library.core;
+package org.example.library.processor;
 
 import java.nio.file.Path;
 import java.util.Set;

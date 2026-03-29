@@ -1,7 +1,7 @@
 package org.example.library.monitor;
 
 import lombok.RequiredArgsConstructor;
-import org.example.library.core.FileProcessor;
+import org.example.library.processor.FileProcessor;
 
 import java.io.IOException;
 import java.nio.file.*;

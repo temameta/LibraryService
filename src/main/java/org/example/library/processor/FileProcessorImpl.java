@@ -1,7 +1,8 @@
-package org.example.library.core;
+package org.example.library.processor;
 
 import lombok.RequiredArgsConstructor;
 import org.example.library.reader.TextReader;
+import org.example.library.storage.IndexStorage;
 import org.example.library.tokenizator.Tokenizer;
 
 import java.io.IOException;
