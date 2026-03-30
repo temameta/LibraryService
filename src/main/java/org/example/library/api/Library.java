@@ -8,8 +8,8 @@ import org.example.library.reader.PlainTextReader;
 import org.example.library.reader.TextReader;
 import org.example.library.storage.InMemoryIndex;
 import org.example.library.storage.IndexStorage;
-import org.example.library.tokenizator.RegexTokenizer;
-import org.example.library.tokenizator.Tokenizer;
+import org.example.library.tokenizer.RegexTokenizer;
+import org.example.library.tokenizer.Tokenizer;
 
 import java.io.IOException;
 import java.nio.file.Files;
