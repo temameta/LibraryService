@@ -1,4 +1,4 @@
-package org.example.library.tokenizator;
+package org.example.library.tokenizer;
 
 import java.util.Set;
 
