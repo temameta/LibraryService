@@ -27,7 +27,7 @@ public class PlainTextReader implements TextReader{
     }
 
     private String readLight(Path path) throws IOException {
-        return Files.readString(path);
+        return Files.readString(path).replaceAll("[\\x00-\\x1F\\x7F]", " ");
     }
 
     private String readHeavy(Path path) throws IOException {
