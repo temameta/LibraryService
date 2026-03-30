@@ -30,16 +30,6 @@ public class InMemoryIndex implements IndexStorage {
     }
 
     @Override
-    public void removeToken(String token) {
-        writeLock.lock();
-        try {
-            index.remove(token);
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    @Override
     public void removePath(Path path) {
         writeLock.lock();
         try {
@@ -58,5 +48,10 @@ public class InMemoryIndex implements IndexStorage {
         } finally {
             readLock.unlock();
         }
+    }
+
+    @Override
+    public boolean containsToken(String token) {
+        return index.containsKey(token);
     }
 }
