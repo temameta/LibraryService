@@ -14,9 +14,11 @@ public class RegexTokenizer implements Tokenizer{
 
     @Override
     public Set<String> extractTokens(String text) {
-        if (text.isEmpty()) return Collections.emptySet();
+        if (text == null || text.isEmpty()) return Collections.emptySet();
         return Arrays.stream(text.split(regex))
-                .filter(word -> !word.isBlank())  // Фильтруем пустые строки
+                .filter(word -> !word.isBlank())
+                .map(String::toLowerCase)
+                .map(String::strip)
                 .collect(Collectors.toSet());
     }
 }
