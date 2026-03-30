@@ -3,7 +3,7 @@ package org.example.library.processor;
 import lombok.RequiredArgsConstructor;
 import org.example.library.reader.TextReader;
 import org.example.library.storage.IndexStorage;
-import org.example.library.tokenizator.Tokenizer;
+import org.example.library.tokenizer.Tokenizer;
 
 import java.io.IOException;
 import java.nio.file.Path;
