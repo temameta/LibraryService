@@ -26,7 +26,7 @@ public class FileProcessorImpl implements FileProcessor {
                     index.addTokens(tokens, path);
                 }
             } catch (IOException exception) {
-                System.out.println(path + "Failed to add file to index");
+                System.out.println(path + " Failed to add file to index");
             }
         }
     }
