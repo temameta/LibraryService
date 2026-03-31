@@ -37,6 +37,7 @@ public class FileProcessorImpl implements FileProcessor {
     }
 
     private String getExtension(Path path) {
+        if (!path.toString().contains(".")) return "";
         return path.toString().substring(path.toString().lastIndexOf("."));
     }
 }
