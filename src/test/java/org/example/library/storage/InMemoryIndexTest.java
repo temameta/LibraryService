@@ -5,10 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,7 +87,7 @@ public class InMemoryIndexTest {
         int threadCount = 100;
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         CountDownLatch startLatch = new CountDownLatch(1);
-        Set<Path> paths = new HashSet<>();
+        Set<Path> paths = ConcurrentHashMap.newKeySet();
         for (int i = 0; i < threadCount; i++) {
             final int num = i;
             executor.submit(() -> {
@@ -109,7 +106,7 @@ public class InMemoryIndexTest {
         assertTrue(executor.awaitTermination(10, TimeUnit.SECONDS));
         Set<Path> result = index.search("многопоточность");
         assertEquals(threadCount, result.size());
-        assertEquals(paths, result);
+        assertTrue(result.containsAll(paths));
     }
 
     @Test
@@ -122,7 +119,7 @@ public class InMemoryIndexTest {
             Path file = Path.of("/docs/file" + i + ".txt");
             index.addTokens(Set.of("многопоточность"), file);
         }
-        List<Set<Path>> searches = new ArrayList<>();
+        List<Set<Path>> searches = Collections.synchronizedList(new ArrayList<>());
         for (int i = 0; i < threadCount; i++) {
             executor.submit(() -> {
                 try {
