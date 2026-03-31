@@ -6,6 +6,7 @@ import org.example.library.storage.InMemoryIndex;
 import org.example.library.storage.IndexStorage;
 import org.example.library.tokenizer.RegexTokenizer;
 import org.example.library.tokenizer.Tokenizer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -18,13 +19,19 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileProcessorTest {
-    private final IndexStorage index = new InMemoryIndex();
+    private IndexStorage index;
     private final Tokenizer tokenizer = new RegexTokenizer(" ");
     private final Set<TextReader> readers = Set.of(new PlainTextReader());
-    private final FileProcessor processor = new FileProcessorImpl(tokenizer, index, readers);
+    private FileProcessor processor;
 
     @TempDir
     Path tempDir;
+
+    @BeforeEach
+    void setUp() {
+        index = new InMemoryIndex();
+        processor = new FileProcessorImpl(tokenizer, index, readers);
+    }
 
     @Test
     @DisplayName("Индексация файла работает корректно")
@@ -46,6 +53,10 @@ public class FileProcessorTest {
         Files.createFile(file);
         assertDoesNotThrow(() -> processor.indexFile(file));
         assertTrue(index.search("слово").isEmpty());
+        Path secondFile = tempDir.resolve("file");
+        Files.writeString(secondFile,"файл");
+        assertDoesNotThrow(() -> processor.indexFile(file));
+        assertTrue(index.search("файл").isEmpty());
     }
 
     @Test

@@ -6,6 +6,7 @@ import org.example.library.processor.FileProcessor;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,9 +17,13 @@ public class FileMonitorImpl implements FileMonitor {
     private final FileProcessor fileProcessor;
     private final Map<WatchKey, Path> keys = new ConcurrentHashMap<>();
 
-    public FileMonitorImpl(FileProcessor fileProcessor) throws IOException {
+    public FileMonitorImpl(FileProcessor fileProcessor) {
         this.fileProcessor = fileProcessor;
-        this.watchService = FileSystems.getDefault().newWatchService();
+        try {
+            this.watchService = FileSystems.getDefault().newWatchService();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize FileMonitor\n" + Arrays.toString(e.getStackTrace()));
+        }
     }
 
     private Thread watchThread;

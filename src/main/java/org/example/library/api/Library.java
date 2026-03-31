@@ -37,12 +37,8 @@ public class Library implements AutoCloseable {
         this.tokenizer = tokenizer;
         this.readers = readers;
         this.processor = new FileProcessorImpl(this.tokenizer, this.index, this.readers);
-        try {
-            this.monitor = new FileMonitorImpl(this.processor);
-            this.monitor.start();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to initialize FileMonitor\n" + Arrays.toString(e.getStackTrace()));
-        }
+        this.monitor = new FileMonitorImpl(this.processor);
+        this.monitor.start();
     }
 
     public void indexDirectory(Path path) {
