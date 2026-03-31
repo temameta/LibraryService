@@ -1,5 +1,6 @@
 package org.example.library.storage;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,12 @@ import java.util.concurrent.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryIndexTest {
-    private final IndexStorage index = new InMemoryIndex();
+    private IndexStorage index;
+
+    @BeforeEach
+    void setUp() {
+         index = new InMemoryIndex();
+    }
 
     @Test
     @DisplayName("Индекс корректно возвращает пути")
