@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        System.setOut(new java.io.PrintStream(System.out, true, java.nio.charset.StandardCharsets.UTF_8));
+        System.setErr(new java.io.PrintStream(System.err, true, java.nio.charset.StandardCharsets.UTF_8));
         Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
         try (Library library = new Library(" ")) {
             System.out.println("Простая CLI программа для демонстрации работы библиотеки для индексации файлов");

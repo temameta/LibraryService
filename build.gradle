@@ -4,13 +4,15 @@ plugins {
     id 'application'
 }
 application {
-    // Укажите полный путь к вашему Main классу (включая пакет, если он есть)
     mainClass = 'org.example.app.Main'
 }
 
-// РАЗРЕШАЕМ ЧТЕНИЕ ИЗ КОНСОЛИ
 run {
     standardInput = System.in
+    jvmArgs '-Dfile.encoding=UTF-8',
+            '-Dsun.stdout.encoding=UTF-8',
+            '-Dsun.stderr.encoding=UTF-8',
+            '-Dconsole.encoding=UTF-8'
 }
 
 group = 'org.example'
@@ -28,11 +30,16 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    jvmArgs '-Dfile.encoding=UTF-8',
+            '-Dsun.stdout.encoding=UTF-8',
+            '-Dsun.stderr.encoding=UTF-8'
 }
 
-tasks.withType(JavaExec) {
-    systemProperty "file.encoding", "UTF-8"
-    // Добавляем эти две строки для новых версий Java:
-    systemProperty "sun.stdout.encoding", "UTF-8"
-    systemProperty "sun.stderr.encoding", "UTF-8"
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaExec).configureEach {
+    jvmArgs '-Dfile.encoding=UTF-8',
+            '-Dsun.stdout.encoding=UTF-8',
+            '-Dsun.stderr.encoding=UTF-8'
 }
